@@ -43,22 +43,23 @@ const songsArray = [{
   name: "Bedtime Stories",
   url: "http://res.cloudinary.com/alick/video/upload/v1502375674/Bedtime_Stories.mp3"
 }, {
-  id:8,
-  name:"Despacito",
-  url:"http://res.cloudinary.com/alick/video/upload/v1502689683/Luis_Fonsi_-_Despacito_ft._Daddy_Yankee_uyvqw9.mp3"
+  id: 8,
+  name: "Despacito",
+  url: "http://res.cloudinary.com/alick/video/upload/v1502689683/Luis_Fonsi_-_Despacito_ft._Daddy_Yankee_uyvqw9.mp3"
 }
 ]
 
 export class App extends React.Component {
 
   state = {
-    // url: null,
+    url: null,
     playing: true,
     volume: 0.8,
     played: 0,
     playackRate: 1.0,
     duration: 0,
-    selectedSongIdx: 0
+    selectedSongIdx: 0,
+    loop: false
   }
 
   playPause = () => {
@@ -102,24 +103,44 @@ export class App extends React.Component {
   }
 
   toNextSong = () => {
+    if (this.state.selectedSongIdx === songsArray.length - 1) {
+      this.stop()
+      console.log("This was last song")
+      return
+    }
     console.log('toNextSong')
     this.setState({ selectedSongIdx: this.state.selectedSongIdx + 1 })
+
   }
 
-  toPreviousSong = (id) => {
+  toPreviousSong = () => {
+    if (this.state.selectedSongIdx === 0) {
+      this.stop()
+      console.log("This was first song")
+      return
+    }
     this.setState({ selectedSongIdx: this.state.selectedSongIdx - 1 })
   }
 
   randomSong = () => {
     const item = songsArray[Math.floor(Math.random() * songsArray.length)];
     console.log(item)
-    this.setState({ selectedSongIdx: item.id -1})
+    this.setState({ selectedSongIdx: item.id - 1 })
   }
 
-  player = null
+  toggleLoop = () => {
+    this.setState({ loop: !this.state.loop })
+  }
+
+  onEnded = () => {
+    console.log('onEnded')
+    this.setState({ playing: this.state.loop })
+  }
+
+  // player = null
 
   render() {
-    const { playing, volume, played, selectedSongIdx } = this.state
+    const { playing, volume, played, selectedSongIdx, loop } = this.state
 
     return <div>
       <ReactPlayer
@@ -131,6 +152,7 @@ export class App extends React.Component {
         onSeek={e => console.log('onSeek', e)}
         className='react-player'
         ref={(el) => this.player = el}
+        loop={loop}
       />
       <div className="btn-volume-container">
 
@@ -162,6 +184,10 @@ export class App extends React.Component {
         />
       </div>
 
+      <div>
+        <label htmlFor='loop'>Loop</label>
+        <input id='loop' type='checkbox' checked={loop} onChange={this.toggleLoop} />
+      </div>
     </div>
   }
 }

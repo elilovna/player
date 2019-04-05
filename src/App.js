@@ -54,7 +54,7 @@ export class App extends React.Component {
   state = {
     url: null,
     playing: true,
-    volume: 0.8,
+    volume: 1,
     played: 0,
     playackRate: 1.0,
     duration: 0,

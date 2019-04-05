@@ -19,24 +19,33 @@ const songsArray = [{
   url: "http://www.synope.dk/mp3/vtd/02.mp3"
 }
   , {
-  id: 2,
+  id: 3,
   name: "Danish2",
   url: "http://www.synope.dk/mp3/vtd/03.mp3"
 }
   , {
-  id: 2,
+  id: 4,
   name: "Danish2",
   url: "http://www.synope.dk/mp3/vtd/04.mp3"
 }
   , {
-  id: 2,
+  id: 5,
   name: "Danish2",
   url: "http://www.synope.dk/mp3/vtd/05.mp3"
 }
   , {
-  id: 2,
+  id: 6,
   name: "Danish2",
   url: "http://www.synope.dk/mp3/vtd/02.mp3"
+},
+{
+  id: 7,
+  name: "Bedtime Stories",
+  url: "http://res.cloudinary.com/alick/video/upload/v1502375674/Bedtime_Stories.mp3"
+}, {
+  id:8,
+  name:"Despacito",
+  url:"http://res.cloudinary.com/alick/video/upload/v1502689683/Luis_Fonsi_-_Despacito_ft._Daddy_Yankee_uyvqw9.mp3"
 }
 ]
 
@@ -101,6 +110,12 @@ export class App extends React.Component {
     this.setState({ selectedSongIdx: this.state.selectedSongIdx - 1 })
   }
 
+  randomSong = () => {
+    const item = songsArray[Math.floor(Math.random() * songsArray.length)];
+    console.log(item)
+    this.setState({ selectedSongIdx: item.id -1})
+  }
+
   player = null
 
   render() {
@@ -131,6 +146,9 @@ export class App extends React.Component {
           <input id="volume" type='range' min={0} max={1} step='any' value={volume} onChange={this.setVolume} />
         </div>
       </div>
+
+
+      <button id="random-btn" onClick={() => this.randomSong()}>play random songs</button>
 
       <span id="song-title">title:{songsArray[0].name}</span>
 
